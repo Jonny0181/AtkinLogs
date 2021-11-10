@@ -39,4 +39,3 @@ client.on('ready', () => {
 })
 
 client.login(process.env.TOKEN)
-export const logChannel = process.env.LOGCHANNEL

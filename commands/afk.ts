@@ -1,6 +1,5 @@
 import DiscordJS, { MessageActionRow, MessageButton, MessageComponentInteraction, TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { logChannel } from '..'
 
 export default {
     category: 'Logging',
@@ -56,11 +55,15 @@ export default {
                 .setStyle('SUCCESS')
         )
 
-        let afkMsg = await channel.send({embeds: [embed], components: [row]})
+        let afkMsg = await channel.send({embeds: [embed]})
         if (msgInt) {
             msgInt.reply({
-                content: 'Submited your log!',
+                content: 'Done.',
                 ephemeral: true
+            })
+            msgInt.user.send({
+                content: 'Submited your log! When you are back please click this button!',
+                components: [row]
             })
         }
 

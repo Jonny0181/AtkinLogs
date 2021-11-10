@@ -1,6 +1,5 @@
 import { ICommand } from "wokcommands";
 import DiscordJS, { GuildMember, TextChannel } from 'discord.js'
-import { logChannel } from "..";
 
 export default {
     category: 'Logging',
