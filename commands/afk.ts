@@ -5,7 +5,7 @@ import { logChannel } from '..'
 export default {
     category: 'Logging',
     description: 'Log your afk time.',
-    slash: 'both', 
+    slash: 'both',
     testOnly: true,
     minArgs: 3,
     expectedArgs: '<server> <time_start> <duration>',

@@ -4,43 +4,35 @@ import { logChannel } from '..'
 
 export default {
     category: 'Logging',
-    description: 'Log family recruitments.',
-    slash: 'both',
+    description: 'Log all druglab actions.',
+    slash: 'both', 
     testOnly: true,
-    minArgs: 3,
-    expectedArgs: '<server> <name> <time>',
+    minArgs: 2,
+    expectedArgs: '<time> <products>',
     options: [
         {
-            name: 'server',
-            description: 'Please specify either 1 or 2 for the city you are logging for.',
-            required: true,
-            type: DiscordJS.Constants.ApplicationCommandOptionTypes.NUMBER
-        },
-        {
-            name: 'name',
-            description: 'The name of the person you recruited.',
+            name: 'time',
+            description: 'The time you created the actions.',
             required: true,
             type: DiscordJS.Constants.ApplicationCommandOptionTypes.STRING
         },
         {
-            name: 'time',
-            description: 'Server time of when you recruited the person.',
+            name: 'products',
+            description: 'All the products you removed. Ex: 10 coke, 5 weed, 20 money.',
             required: true,
             type: DiscordJS.Constants.ApplicationCommandOptionTypes.STRING
         }
     ],
     callback: async ({ message, interaction: msgInt, args }) => {
         const channel = (message ? message.guild : msgInt.guild?.channels.cache.get(`${logChannel}`)) as TextChannel
-        const serverID = args[0]
-        const name = args[1]
-        const time = args[2]
+        const time = args[0]
+        const products = args[1]
         const embed = new DiscordJS.MessageEmbed()
-            .setDescription(`<@${msgInt.user.id}> has recruited someone!`)
-            .addField('Name:', name, true)
+            .setDescription(`<@${msgInt.user.id}> has logged the druglab!`)
             .addField('Time:', time, true)
+            .addField('Products:', products, false)
             .setColor('BLURPLE')
-            .setThumbnail('https://i.imgur.com/cfcJG0y.png')
-            .setFooter(`This action was logged for server ${serverID}.`)
+            .setThumbnail('https://i.imgur.com/mEZlZhO.jpeg')
         await channel.send({embeds: [embed]})
         if (msgInt) {
             msgInt.reply({
