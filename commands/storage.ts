@@ -56,7 +56,12 @@ export default {
         const IO = args[1]
         const desc = args[5]
         const author = message ? message.author : msgInt.user
-        const channel = (message ? message.guild : msgInt.guild?.channels.cache.get(`${logChannel}`)) as TextChannel
+        if (serverID === '1') {
+            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
+        } else {
+            
+            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
+        }
         if (!channel || channel.type !== 'GUILD_TEXT') {
             return 'Please tag a text channel.'
         }
@@ -82,7 +87,6 @@ export default {
             .addField('Amount', amount, true)
             .addField('Time', time, true)
             .setThumbnail('http://cdn.shopify.com/s/files/1/1061/1924/products/Package_Box_Emoji_grande.png?v=1571606035')
-            .setFooter(`This action was logged for server ${serverID}.`)
             if (IO === 'in') {
                 var label = 'put in'
                 embed.setColor('GREEN')

@@ -8,8 +8,14 @@ export default {
     slash: 'both', 
     testOnly: true,
     minArgs: 2,
-    expectedArgs: '<time> <products>',
+    expectedArgs: '<server> <time> <products>',
     options: [
+        {
+            name: 'server',
+            description: 'Which server is this for?',
+            required: true,
+            type: DiscordJS.Constants.ApplicationCommandOptionTypes.STRING
+        },
         {
             name: 'time',
             description: 'The time you created the actions.',
@@ -24,9 +30,15 @@ export default {
         }
     ],
     callback: async ({ message, interaction: msgInt, args }) => {
-        const channel = (message ? message.guild : msgInt.guild?.channels.cache.get(`${logChannel}`)) as TextChannel
-        const time = args[0]
-        const products = args[1]
+        const serverID = args[0]
+        if (serverID === '1') {
+            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
+        } else {
+            
+            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
+        }
+        const time = args[1]
+        const products = args[2]
         const embed = new DiscordJS.MessageEmbed()
             .setDescription(`<@${msgInt.user.id}> has logged the druglab!`)
             .addField('Time:', time, true)

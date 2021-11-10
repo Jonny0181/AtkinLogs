@@ -33,14 +33,18 @@ export default {
         const serverID = args[0]
         const bizName = args[1]
         const amount = args[2]
-        const channel = (message ? message.guild : msgInt.guild?.channels.cache.get(`${logChannel}`)) as TextChannel
+        if (serverID === '1') {
+            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
+        } else {
+            
+            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
+        }
         const embed = new DiscordJS.MessageEmbed()
             .setColor('GREEN')
             .setDescription(`<@${msgInt.user.id}> has collected profits!`)
             .addField('Buisness:', bizName, true)
             .addField('Amount:', `$${amount}`, true)
             .setThumbnail('http://cdn.shopify.com/s/files/1/1061/1924/products/Money_with_Wings_Emoji_grande.png?v=1571606064')
-            .setFooter(`This action was logged for server ${serverID}.`)
         await channel.send({embeds: [embed]})
         if (msgInt) {
             msgInt.reply({

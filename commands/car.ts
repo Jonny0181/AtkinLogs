@@ -42,8 +42,13 @@ export default {
         }
     ],
     callback: async ({ message, interaction: msgInt, args }) => {
-        const channel = (message ? message.guild : msgInt.guild?.channels.cache.get(`${logChannel}`)) as TextChannel
         const serverID = args[0]
+        if (serverID === '1') {
+            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
+        } else {
+            
+            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
+        }
         const carName = args[1]
         const IOG = args[2]
         const time = args[3]
@@ -73,7 +78,6 @@ export default {
             embed.setDescription(`<@${msgInt.user.id}> has taken a car out of the garage!`)
         }
         embed.setThumbnail('https://cdn-icons-png.flaticon.com/128/3774/3774278.png')
-        .setFooter(`This action was logged for server ${serverID}.`)
         await channel.send({embeds: [embed]})
         if (msgInt) {
             msgInt.reply({
