@@ -17,7 +17,6 @@ client.on('ready', () => {
     console.log('The bot is ready')
     new WOKCommands(client, {
         commandsDir: path.join(__dirname, 'commands'),
-        featuresDir: path.join(__dirname, 'features'),
         showWarns: true,
         typeScript: true,
         testServers: ['864624899292266526'],
@@ -28,6 +27,10 @@ client.on('ready', () => {
         {
             name: 'Moderation',
             emoji: '⚒️',
+        },
+        {
+            name: 'Server Configuration',
+            emoji: '🔧',
         },
         {
             name: 'Logging',
