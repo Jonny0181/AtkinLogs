@@ -1,6 +1,5 @@
 import DiscordJS, { MessageActionRow, MessageButton, MessageComponentInteraction, TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
-import { logChannel } from '..'
 
 export default {
     category: 'Logging',
