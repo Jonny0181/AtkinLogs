@@ -58,11 +58,7 @@ export default {
         if (serverID === '1') {
             var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
         } else {
-            
             var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-        }
-        if (!channel || channel.type !== 'GUILD_TEXT') {
-            return 'Please tag a text channel.'
         }
         if (IO !in options) {
             msgInt.reply({
