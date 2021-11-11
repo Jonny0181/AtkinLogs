@@ -13,6 +13,9 @@
   "dependencies": {
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",
+    "lavacord": "^1.1.9",
+    "lavalink": "^2.11.0",
+    "url": "^0.11.0",
     "wokcommands": "^1.5.3"
   }
 }
