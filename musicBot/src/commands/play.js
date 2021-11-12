@@ -40,7 +40,11 @@ module.exports = {
                     msg.channel.send(util.embed().setDescription(`✅ | **${track.info.title}** added to the queue.`));
             }
             
-            if (!music.player) await music.join(msg.member.voice.channel);
+            if (!music.player) {
+                await music.join(msg.member.voice.channel);
+                const newVolume = parseInt(10, 10);
+                await music.setVolume(newVolume)
+            }
             if (!music.player.playing) await music.start();
 
             music.setTextCh(msg.channel);
