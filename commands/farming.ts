@@ -31,10 +31,11 @@ export default {
     callback: async ({ message, interaction: msgInt, args}) => {
         const serverID = args[0]
         if (serverID === '1') {
-            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
+            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046740291223562')) as TextChannel
+            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
         } else {
-            
-            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
+            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041393417621545')) as TextChannel
+            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
         }
         const houseNumber = args[1]
         const timeRemaining = args[2]
@@ -44,7 +45,8 @@ export default {
             .addField('House number:', houseNumber, true)
             .addField('Time Remaining:', timeRemaining, true)
             .setThumbnail('https://cdn.shopify.com/s/files/1/1061/1924/products/26_large.png?v=1571606116')
-        await channel.send({embeds: [embed]})
+        await mainChannel.send({embeds: [embed]})
+        await adminChannel.send({embeds: [embed]})
         if (msgInt) {
             msgInt.reply({
                 content: 'Submitted your log!',

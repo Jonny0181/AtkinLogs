@@ -18,7 +18,7 @@ module.exports = {
             const separatedArtistAndTitle = /(.+) - (.+)/.test(msg.guild.music.current.info.title);
             query = `${separatedArtistAndTitle ? msg.guild.music.current.info.title : msg.guild.music.current.info.author.replace(" - Topic", "")} - ${msg.guild.music.current.info.title}`;
         } else {
-            return msg.channel.send(util.embed().setDescription("❌ | Missing args."));
+            return msg.channel.send("❌ Missing args.");
         }
 
         try {
@@ -36,7 +36,7 @@ module.exports = {
             const lyricsMsg = await msg.channel.send(embed);
             if (splittedLyrics.length > 1) await util.pagination(lyricsMsg, msg.author, splittedLyrics);
         } catch (e) {
-            if (e.message === "Sorry I couldn't find that song's lyrics") msg.channel.send(util.embed().setDescription(`❌ | ${e.message}`));
+            if (e.message === "Sorry I couldn't find that song's lyrics") msg.channel.send(`❌ | ${e.message}`);
             else msg.channel.send(`An error occured: ${e.message}.`);   
         }
     }
