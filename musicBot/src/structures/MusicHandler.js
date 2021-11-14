@@ -126,3 +126,4 @@ module.exports = class MusicHandler {
         this.volume = newVol;
     }
 };
+
