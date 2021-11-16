@@ -37,7 +37,7 @@ module.exports = class Util {
     }
 
     static get paginationEmojis() {
-        return ["◀", "⛔", "▶"];
+        return ["◀", "❌", "▶"];
     }
 
     static async pagination(msg, author, contents, init = true, currPage = 0) {
