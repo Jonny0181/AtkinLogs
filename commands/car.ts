@@ -55,12 +55,11 @@ export default {
         const cost = args[4]
         if (IOG === 'gassed') {
             if (!cost) {
-                msgInt.reply({
+                return msgInt.reply({
                     content: 'Please specify how much you payed for gas!',
                     ephemeral: true
                 })
             }
-            return;
         }
         const embed = new DiscordJS.MessageEmbed()
             .addField('Time:', time, true)
