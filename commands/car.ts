@@ -60,6 +60,7 @@ export default {
                     ephemeral: true
                 })
             }
+            return;
         }
         const embed = new DiscordJS.MessageEmbed()
             .addField('Time:', time, true)
