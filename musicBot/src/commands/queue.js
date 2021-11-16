@@ -5,8 +5,8 @@ module.exports = {
     aliases: ["q"],
     exec: async (msg) => {
         const { music } = msg.guild;
-        if (!music.player || !music.player.playing) return msg.channel.send("❌ Currently not playing anything.");
-        if (!music.queue.length) return msg.channel.send("❌ Queue is empty.");
+        if (!music.player || !music.player.playing) return msg.channel.send("❌ Currently not playing anything.").then(msg => {msg.delete({timeout: 10000})});
+        if (!music.queue.length) return msg.channel.send("❌ Queue is empty.").then(msg => {msg.delete({timeout: 10000})});
 
         const queue = music.queue.map((t, i) => `\`${++i}.\` **${t.info.title}** ${t.requester}`);
         const chunked = util.chunk(queue, 10).map(x => x.join("\n"));
