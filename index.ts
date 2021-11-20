@@ -18,7 +18,7 @@ client.on('ready', () => {
         commandsDir: path.join(__dirname, 'commands'),
         showWarns: true,
         typeScript: true,
-        testServers: ['864624899292266526'],
+        testServers: ['864624899292266526', '678226695190347797'],
         mongoUri: process.env.MONGO_URI,
     })
     .setDefaultPrefix('a.')

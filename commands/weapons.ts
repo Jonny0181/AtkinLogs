@@ -1,5 +1,5 @@
 import { ICommand } from "wokcommands";
-import DiscordJS, { GuildMember, TextChannel } from 'discord.js'
+import DiscordJS, { GuildMember, MessageEmbed, TextChannel } from 'discord.js'
 
 export default {
     category: 'Logging',
@@ -47,56 +47,66 @@ export default {
         }
     ],
     callback: async ({ message, interaction: msgInt, args }) => {
-        const options = ['in', 'out']
-        const serverID = args[0]
-        const item = args[2]
-        const amount = args[3]
-        const time = args[4]
-        const IO = args[1]
-        const desc = args[5]
-        const author = message ? message.author : msgInt.user
-        if (serverID === '1') {
-            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
-            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
-        } else {
-            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
-        }
-        if (IO !in options) {
-            msgInt.reply({
-                content: 'Please use `in` or `out`!',
-                ephemeral: true
-            })
-        }
-        if (IO === 'in') {
-            var label = 'put in'
-        } else {
-            var label = 'taken'
-        }
-        if (desc) {
-            var description = desc
-        } else {
-            description = "No notes added."
-        }
-        const embed = new DiscordJS.MessageEmbed()
-            .setDescription(`A new item has been ${label} by <@${author.id}>!\n\n${description}`)
-            .addField('Item', item, true)
-            .addField('Amount', amount, true)
-            .addField('Time', time, true)
-            .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/48/pistol_1f52b.png')
+        try {
+            const options = ['in', 'out']
+            const serverID = args[0]
+            const item = args[2]
+            const amount = args[3]
+            const time = args[4]
+            const IO = args[1]
+            const desc = args[5]
+            const author = message ? message.author : msgInt.user
+            if (serverID === '1') {
+                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
+                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
+            } else {
+                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
+                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
+            }
+            if (IO !in options) {
+                msgInt.reply({
+                    content: 'Please use `in` or `out`!',
+                    ephemeral: true
+                })
+            }
             if (IO === 'in') {
                 var label = 'put in'
-                embed.setColor('GREEN')
             } else {
                 var label = 'taken'
-                embed.setColor('RED')
             }
-        await mainChannel.send({embeds: [embed]})
-        await adminChannel.send({embeds: [embed]})
-        if (msgInt) {
-            msgInt.reply({
-                content: 'Submitted your log!',
-                ephemeral: true
+            if (desc) {
+                var description = desc
+            } else {
+                description = "No notes added."
+            }
+            const embed = new DiscordJS.MessageEmbed()
+                .setDescription(`A new item has been ${label} by <@${author.id}>!\n\n${description}`)
+                .addField('Item', item, true)
+                .addField('Amount', amount, true)
+                .addField('Time', time, true)
+                .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/48/pistol_1f52b.png')
+                if (IO === 'in') {
+                    var label = 'put in'
+                    embed.setColor('GREEN')
+                } else {
+                    var label = 'taken'
+                    embed.setColor('RED')
+                }
+            await mainChannel.send({embeds: [embed]})
+            await adminChannel.send({embeds: [embed]})
+            if (msgInt) {
+                msgInt.reply({
+                    content: 'Submitted your log!',
+                    ephemeral: true
+                })
+            }
+        } catch(error) {
+            const embed = new MessageEmbed()
+                .setColor('RED')
+                .addField('Error:', `\`\`\`\n${error}\`\`\``, false)
+            return msgInt.reply({
+               content: `<@827940585201205258> What the there was an error!?`,
+               embeds: [embed]
             })
         }
     }

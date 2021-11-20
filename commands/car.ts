@@ -1,4 +1,4 @@
-import DiscordJS, { TextChannel } from 'discord.js'
+import DiscordJS, { MessageEmbed, TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
 
 export default {
@@ -41,49 +41,59 @@ export default {
         }
     ],
     callback: async ({ message, interaction: msgInt, args }) => {
-        const serverID = args[0]
-        if (serverID === '1') {
-            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
-            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
-        } else {
-            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
-        }
-        const carName = args[1]
-        const IOG = args[2]
-        const time = args[3]
-        const cost = args[4]
-        if (IOG === 'gassed') {
-            if (!cost) {
-                return msgInt.reply({
-                    content: 'Please specify how much you payed for gas!',
+        try {
+            const serverID = args[0]
+            if (serverID === '1') {
+                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
+                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
+            } else {
+                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
+                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
+            }
+            const carName = args[1]
+            const IOG = args[2]
+            const time = args[3]
+            const cost = args[4]
+            if (IOG === 'gassed') {
+                if (!cost) {
+                    return msgInt.reply({
+                        content: 'Please specify how much you payed for gas!',
+                        ephemeral: true
+                    })
+                }
+            }
+            const embed = new DiscordJS.MessageEmbed()
+                .addField('Time:', time, true)
+                .addField('Car Name:', carName, true)
+            if (IOG === 'gassed') {
+                embed.setColor('PURPLE')
+                embed.setDescription(`<@${msgInt.user.id}> filled up a car!`)
+                embed.addField('Cost:', `$${cost}`, true)
+            }
+            if (IOG === 'in') {
+                embed.setColor('GREEN')
+                embed.setDescription(`<@${msgInt.user.id}> put a car in the garage!`)
+            }
+            if (IOG === 'out') {
+                embed.setColor('RED')
+                embed.setDescription(`<@${msgInt.user.id}> has taken a car out of the garage!`)
+            }
+            embed.setThumbnail('https://cdn-icons-png.flaticon.com/128/3774/3774278.png')
+            await mainChannel.send({embeds: [embed]})
+            await adminChannel.send({embeds: [embed]})
+            if (msgInt) {
+                msgInt.reply({
+                    content: 'Submitted your log!',
                     ephemeral: true
                 })
             }
-        }
-        const embed = new DiscordJS.MessageEmbed()
-            .addField('Time:', time, true)
-            .addField('Car Name:', carName, true)
-        if (IOG === 'gassed') {
-            embed.setColor('PURPLE')
-            embed.setDescription(`<@${msgInt.user.id}> filled up a car!`)
-            embed.addField('Cost:', `$${cost}`, true)
-        }
-        if (IOG === 'in') {
-            embed.setColor('GREEN')
-            embed.setDescription(`<@${msgInt.user.id}> put a car in the garage!`)
-        }
-        if (IOG === 'out') {
-            embed.setColor('RED')
-            embed.setDescription(`<@${msgInt.user.id}> has taken a car out of the garage!`)
-        }
-        embed.setThumbnail('https://cdn-icons-png.flaticon.com/128/3774/3774278.png')
-        await mainChannel.send({embeds: [embed]})
-        await adminChannel.send({embeds: [embed]})
-        if (msgInt) {
-            msgInt.reply({
-                content: 'Submitted your log!',
-                ephemeral: true
+        } catch(error) {
+            const embed = new MessageEmbed()
+                .setColor('RED')
+                .addField('Error:', `\`\`\`\n${error}\`\`\``, false)
+            return msgInt.reply({
+               content: `<@827940585201205258> What the there was an error!?`,
+               embeds: [embed]
             })
         }
     }
