@@ -3,18 +3,12 @@ import { ICommand } from 'wokcommands'
 
 export default {
     category: 'Logging',
-    description: 'Log nourished seeds.',
+    description: 'Log nourished seeds at family house or family members houses.',
     slash: 'both', 
     testOnly: true,
-    minArgs: 3,
-    expectedArgs: '<server> <house_number> <time_remaining>',
+    minArgs: 2,
+    expectedArgs: '<house_number> <time_remaining>',
     options: [
-        {
-            name: 'server',
-            description: 'Please specify either 1 or 2 for the city you are logging for.',
-            required: true,
-            type: DiscordJS.Constants.ApplicationCommandOptionTypes.NUMBER
-        },
         {
             name: 'house_number',
             description: 'The number of the house for the seeds.',
@@ -30,16 +24,10 @@ export default {
     ],
     callback: async ({ message, interaction: msgInt, args}) => {
         try {
-            const serverID = args[0]
-            if (serverID === '1') {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
-            } else {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
-            }
-            const houseNumber = args[1]
-            const timeRemaining = args[2]
+            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023484842643567')) as TextChannel
+            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
+            const houseNumber = args[0]
+            const timeRemaining = args[1]
             const embed = new DiscordJS.MessageEmbed()
                 .setColor('GREEN')
                 .setDescription(`<@${msgInt.user.id}> has nourished seeds!`)

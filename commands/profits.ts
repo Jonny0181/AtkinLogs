@@ -3,18 +3,12 @@ import { ICommand } from 'wokcommands'
 
 export default {
     category: 'Logging',
-    description: 'Log collected profits.',
+    description: 'Log collected profits from buisness.',
     slash: 'both', 
     testOnly: true,
-    minArgs: 3,
-    expectedArgs: '<server> <biz_name> <amount>',
+    minArgs: 2,
+    expectedArgs: '<biz_name> <amount>',
     options: [
-        {
-            name: 'server',
-            description: 'Please specify either 1 or 2 for the city you are logging for.',
-            required: true,
-            type: DiscordJS.Constants.ApplicationCommandOptionTypes.NUMBER
-        },
         {
             name: 'biz_name',
             description: 'The name of the buisness.',
@@ -30,16 +24,10 @@ export default {
     ],
     callback: async ({message, interaction: msgInt, args}) => {
         try {
-            const serverID = args[0]
-            const bizName = args[1]
-            const amount = args[2]
-            if (serverID === '1') {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
-            } else {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
-            }
+            const bizName = args[0]
+            const amount = args[1]
+            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023484842643567')) as TextChannel
+            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
             const embed = new DiscordJS.MessageEmbed()
                 .setColor('GREEN')
                 .setDescription(`<@${msgInt.user.id}> has collected profits!`)

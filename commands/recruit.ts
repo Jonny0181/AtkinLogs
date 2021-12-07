@@ -3,18 +3,12 @@ import { ICommand } from 'wokcommands'
 
 export default {
     category: 'Logging',
-    description: 'Log family recruitments.',
+    description: 'Log all family recruitments.',
     slash: 'both',
     testOnly: true,
-    minArgs: 3,
-    expectedArgs: '<server> <name> <time>',
+    minArgs: 2,
+    expectedArgs: '<name> <time>',
     options: [
-        {
-            name: 'server',
-            description: 'Please specify either 1 or 2 for the city you are logging for.',
-            required: true,
-            type: DiscordJS.Constants.ApplicationCommandOptionTypes.NUMBER
-        },
         {
             name: 'name',
             description: 'The name of the person you recruited.',
@@ -30,16 +24,10 @@ export default {
     ],
     callback: async ({ message, interaction: msgInt, args }) => {
         try{
-            const serverID = args[0]
-            if (serverID === '1') {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
-            } else {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
-            }
-            const name = args[1]
-            const time = args[2]
+            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023484842643567')) as TextChannel
+            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
+            const name = args[0]
+            const time = args[1]
             const embed = new DiscordJS.MessageEmbed()
                 .setDescription(`<@${msgInt.user.id}> has recruited someone!`)
                 .addField('Name:', name, true)

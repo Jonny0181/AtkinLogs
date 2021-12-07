@@ -3,18 +3,12 @@ import { ICommand } from 'wokcommands'
 
 export default {
     category: 'Logging',
-    description: 'Log platation time remaining.',
+    description: 'Log the remaining time at the plantation.',
     slash: 'both',
     testOnly: true,
-    minArgs: 2,
-    expectedArgs: '<server> <time_remaining>',
+    minArgs: 1,
+    expectedArgs: '<time_remaining>',
     options: [
-        {
-            name: 'server',
-            description: 'Which server is this for?',
-            required: true,
-            type: DiscordJS.Constants.ApplicationCommandOptionTypes.STRING
-        },
         {
             name: 'time_remaining',
             description: 'How much time is remaining on the plantation?',
@@ -24,15 +18,9 @@ export default {
     ],
     callback: async ({ message, interaction: msgInt, args}) => {
         try{
-            const serverID = args[0]
-            if (serverID === '1') {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
-            } else {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
-            }
-            const timeRemaining = args[1]
+            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023484842643567')) as TextChannel
+            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
+            const timeRemaining = args[0]
             const embed = new DiscordJS.MessageEmbed()
                 .setColor('GREEN')
                 .setDescription(`<@${msgInt.user.id}> has nourished the plantation!\n\nThere is ${timeRemaining} left on the plantation!`)

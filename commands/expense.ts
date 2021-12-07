@@ -3,18 +3,12 @@ import { ICommand } from 'wokcommands'
 
 export default {
     category: 'Logging',
-    description: 'Log nourished seeds.',
+    description: 'Log all money that has been taken out of the family balance.',
     slash: 'both', 
     testOnly: true,
-    minArgs: 3,
-    expectedArgs: '<server> <cost> <notes>',
+    minArgs: 2,
+    expectedArgs: '<cost> <notes>',
     options: [
-        {
-            name: 'server',
-            description: 'Please specify either 1 or 2 for the city you are logging for.',
-            required: true,
-            type: DiscordJS.Constants.ApplicationCommandOptionTypes.NUMBER
-        },
         {
             name: 'cost',
             description: 'How much did this expense cost you?',
@@ -30,16 +24,10 @@ export default {
     ],
     callback: async ({message, interaction: msgInt, args}) => {
         try {
-            const serverID = args[0]
-            if (serverID === '1') {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
-            } else {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
-            }
-            const cost = args[1]
-            const notes = args[2]
+            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023484842643567')) as TextChannel
+            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
+            const cost = args[0]
+            const notes = args[1]
             const embed = new DiscordJS.MessageEmbed()
                 .setColor('RED')
                 .setDescription(`<@${msgInt.user.id}> has logged an expense!`)

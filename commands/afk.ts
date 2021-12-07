@@ -6,16 +6,6 @@ export default {
     description: 'Log your afk time.',
     slash: 'both',
     testOnly: true,
-    minArgs: 1,
-    expectedArgs: '<server>',
-    options: [
-        {
-            name: 'server',
-            description: 'Please specify either 1 or 2 for the city you are logging for.',
-            required: true,
-            type: DiscordJS.Constants.ApplicationCommandOptionTypes.NUMBER
-        }
-    ],
     callback: async ({ message, interaction: msgInt, args}) => {
         function timer() {
             let timeStart = new Date().getTime();
@@ -35,12 +25,7 @@ export default {
             }
         }
         try {
-            const serverID = args[0]
-            if (serverID === '1') {
-                var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046740291223562')) as TextChannel
-            } else {
-                var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041393417621545')) as TextChannel
-            }
+            var channel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041393417621545')) as TextChannel
             const howLong = timer();
             const embed = new DiscordJS.MessageEmbed()
                 .setColor('YELLOW')
@@ -77,7 +62,6 @@ export default {
                     const embed = new DiscordJS.MessageEmbed()
                     .setColor('GREEN')
                     .setDescription(`<@${msgInt.user.id}> is back from being AFK!\n\nHas been afk for ${howLong.hours} ${howLong.minutes} ${howLong.seconds}!`)
-                    .setFooter(`This action was logged for server ${serverID}.`)
                     await afkMsg.edit({
                         embeds: [embed],
                         components: []

@@ -7,14 +7,8 @@ export default {
     slash: 'both', 
     testOnly: true,
     minArgs: 2,
-    expectedArgs: '<server> <time> <products>',
+    expectedArgs: '<time> <products>',
     options: [
-        {
-            name: 'server',
-            description: 'Which server is this for?',
-            required: true,
-            type: DiscordJS.Constants.ApplicationCommandOptionTypes.STRING
-        },
         {
             name: 'time',
             description: 'The time you created the actions.',
@@ -30,16 +24,10 @@ export default {
     ],
     callback: async ({ message, interaction: msgInt, args }) => {
         try {
-            const serverID = args[0]
-            if (serverID === '1') {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
-            } else {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
-            }
-            const time = args[1]
-            const products = args[2]
+            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023484842643567')) as TextChannel
+            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
+            const time = args[0]
+            const products = args[1]
             const embed = new DiscordJS.MessageEmbed()
                 .setDescription(`<@${msgInt.user.id}> has logged the druglab!`)
                 .addField('Time:', time, true)

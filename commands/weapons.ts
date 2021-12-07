@@ -3,18 +3,12 @@ import DiscordJS, { GuildMember, MessageEmbed, TextChannel } from 'discord.js'
 
 export default {
     category: 'Logging',
-    description: 'Logs items put into the weapons storage.',
+    description: 'Logs items put into the weapons storage and taken out.',
     slash: 'both',
     testOnly: true,
-    minArgs: 5,
-    expectedArgs: '<server> <in_out> <item> <amount> <server time> <notes>',
+    minArgs: 4,
+    expectedArgs: '<in_out> <item> <amount> <server time> <notes>',
     options: [
-        {
-            name: 'server',
-            description: 'Please specify either 1 or 2 for the city you are logging for.',
-            required: true,
-            type: DiscordJS.Constants.ApplicationCommandOptionTypes.NUMBER
-        },
         {
             name: 'in_out',
             description: 'Mention if you are taking the item or puttiung it in storage.',
@@ -49,20 +43,14 @@ export default {
     callback: async ({ message, interaction: msgInt, args }) => {
         try {
             const options = ['in', 'out']
-            const serverID = args[0]
-            const item = args[2]
-            const amount = args[3]
-            const time = args[4]
-            const IO = args[1]
-            const desc = args[5]
+            const item = args[1]
+            const amount = args[2]
+            const time = args[3]
+            const IO = args[0]
+            const desc = args[4]
             const author = message ? message.author : msgInt.user
-            if (serverID === '1') {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
-            } else {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
-            }
+            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023484842643567')) as TextChannel
+            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
             if (IO !in options) {
                 msgInt.reply({
                     content: 'Please use `in` or `out`!',

@@ -6,15 +6,9 @@ export default {
     description: 'Log cars that have been gassed or taken in and out of the garage.',
     slash: 'both',
     testOnly: true,
-    minArgs: 4,
-    expectedArgs: '<server> <car_name> <in_out_gassed> <time> <cost>',
+    minArgs: 3,
+    expectedArgs: '<car_name> <in_out_gassed> <time> <cost>',
     options: [
-        {
-            name: 'server',
-            description: 'Please specify either 1 or 2 for the city you are logging for.',
-            required: true,
-            type: DiscordJS.Constants.ApplicationCommandOptionTypes.NUMBER
-        },
         {
             name: 'car_name',
             description: 'The name of the car.',
@@ -42,18 +36,12 @@ export default {
     ],
     callback: async ({ message, interaction: msgInt, args }) => {
         try {
-            const serverID = args[0]
-            if (serverID === '1') {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023660663685120')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908046658988822578')) as TextChannel
-            } else {
-                var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023602098622464')) as TextChannel
-                var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
-            }
-            const carName = args[1]
-            const IOG = args[2]
-            const time = args[3]
-            const cost = args[4]
+            var adminChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908023484842643567')) as TextChannel
+            var mainChannel = (message ? message.guild : msgInt.guild?.channels.cache.get('908041261947166750')) as TextChannel
+            const carName = args[0]
+            const IOG = args[1]
+            const time = args[2]
+            const cost = args[3]
             if (IOG === 'gassed') {
                 if (!cost) {
                     return msgInt.reply({
