@@ -1,87 +1,88 @@
-import { GuildMember, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed } from "discord.js";
-import { ICommand } from "wokcommands";
+import { User } from "discord.js"
+import { ICommand } from "wokcommands"
+import punishmentSchema from "../models/punishment-schema"
+import DiscordJS from 'discord.js'
 
 export default {
     category: 'Moderation',
-    description: 'Bans a user from the guild.',
+    description: 'Bans a user',
+
     permissions: ['ADMINISTRATOR'],
 
-    slash: 'both',
+    minArgs: 3,
+    expectedArgs: '<user> <duration> <reason>',
+    slash: false,
     testOnly: true,
-    guildOnly: true,
 
-    minArgs: 2,
-    expectedArgs: '<user> <reason>',
-    expectedArgsTypes: ['USER', 'STRING'],
-
-    callback: async ({ message, interaction: msgInt, channel, args }) => {
-        try {
-            const target = message ? message.mentions.members?.first() : msgInt.options.getMember('user') as GuildMember
-            if (!target) {
-                return 'Please tag someone to ban.'
-            }
-            if (!target.bannable) {
-                return {
-                    custom: true,
-                    content: 'You cannot ban that user.',
-                    ephemeral: true
-                }
-            }
-            args.shift()
-            const reason = args.join(' ')
-            const row = new MessageActionRow()
-            .addComponents(
-                new MessageButton()
-                    .setCustomId('ban_yes')
-                    .setEmoji('🔨')
-                    .setLabel('Confirm')
-                    .setStyle('SUCCESS')
-            )
-            .addComponents(
-                new MessageButton()
-                    .setCustomId('ban_no')
-                    .setLabel('Cancel')
-                    .setStyle('DANGER')
-            )
-            await msgInt.reply({
-                content: `Are you sure you want to ban ${target.displayName}?`,
-                ephemeral: true,
-                components: [row],
-            })
-            const filter = (btnInt: MessageComponentInteraction) => {
-                return msgInt.user.id === btnInt.user.id
-            }
-            const collector = channel.createMessageComponentCollector({
-                filter, 
-                max: 1,
-                time: 1000 * 15
-            })
-            collector.on('end', async (collection) => {
-                if (collection.first()?.customId === 'ban_yes') {
-                    target.ban({
-                        reason,
-                        days: 7
-                    })
-                    await msgInt.editReply({
-                        content: `You banned <@${target.id}>`,
-                        components: []
-                    })
-                }
-                if (collection.first()?.customId === 'ban_no') {
-                    await msgInt.editReply({
-                        content: 'I have canceled the task.',
-                        components: []
-                    })
-                }
-            })
-        } catch(error) {
-            const embed = new MessageEmbed()
-                .setColor('RED')
-                .addField('Error:', `\`\`\`\n${error}\`\`\``, false)
-            return msgInt.reply({
-               content: `<@827940585201205258> What the there was an error!?`,
-               embeds: [embed]
-            })
+    callback: async ({
+        args,
+        member: staff,
+        guild,
+        client,
+        message,
+        interaction
+    }) => {
+        if (!guild) {
+            return 'You can only use this in a server.'
         }
-    }
+        let userId = args.shift()!
+        const duration = args.shift()!
+        const reason = args.join(' ')
+        let user: User | undefined
+        if (message) {
+            user = message.mentions.users?.first()
+        } else {
+            user = interaction.options.getUser('user') as User
+        }
+        if (!user) {
+            userId = userId.replace(/[<@!>]/g, '')
+            user = await client.users.fetch(userId)
+            if (!user) {
+                return `Could not find the user with the id "${userId}"`
+            }
+        }
+        userId = user.id
+        let time
+        let type
+        try {
+            const split = duration.match(/\d+|\D+/g)
+            time = parseInt(split![0])
+            type = split![1].toLocaleLowerCase()
+        } catch (e) {
+            return "Invalid time format! Example format: \"10d\" where 'd' = days, 'h' = hours and 'm' = minutes."
+        }
+        if (type === 'h') {
+            time *= 60
+        } else if (type === 'd') {
+            time *= 60 * 24
+        } else if (type !== 'm') {
+            return 'Please use "m", "h", or "d" for minutes, hours, and days respectively.'
+        }
+
+        const expires = new Date()
+        expires.setMinutes(expires.getMinutes() + time)
+
+        const result = await punishmentSchema.findOne({
+            guildId: guild.id,
+            userId,
+            type: 'ban'
+        })
+        if (result) {
+            return `<@${user.id} is already banned in this server.`
+        }
+        try {
+            await guild.members.ban(userId, { reason })
+            await new punishmentSchema({
+                userId,
+                guildId: guild.id,
+                staffId: staff.id,
+                reason,
+                expires,
+                type: 'ban',
+            }).save()
+        } catch (ignored) {
+            return "Cannot ban that user."
+        }
+        return `<@${userId}> has been unbanned for ${duration}.`
+    },
 } as ICommand
