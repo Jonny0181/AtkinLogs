@@ -15,6 +15,9 @@
     "dotenv": "^10.0.0",
     "lavacord": "^1.1.9",
     "lavalink": "^2.11.0",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2",
     "url": "^0.11.0",
     "wokcommands": "^1.5.3"
   }
