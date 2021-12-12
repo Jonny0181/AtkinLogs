@@ -22,6 +22,7 @@ client.on('ready', () => {
         typeScript: true,
         testServers: ['864624899292266526', '678226695190347797'],
         mongoUri: process.env.MONGO_URI,
+        botOwners: ['827940585201205258']
     })
     .setDefaultPrefix('a.')
     .setCategorySettings([
