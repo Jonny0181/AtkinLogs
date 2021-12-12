@@ -4,7 +4,7 @@ import { exec } from 'child_process';
 export default {
     category: 'Owner',
     description: 'Executes console commands.',
-    slash: true,
+    slash: 'both',
     testOnly: true,
     ownerOnly: true,
     options: [
